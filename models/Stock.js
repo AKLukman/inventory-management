@@ -4,8 +4,13 @@ const { ObjectId } = mongoose.Schema.Types;
 
 // Schema design
 
-const productSchema = mongoose.Schema(
+const StockSchema = mongoose.Schema(
   {
+    productId: {
+      type: ObjectId,
+      ref: "Product",
+      required: true,
+    },
     name: {
       type: String,
       required: [true, "Please provide a name for this product"],
@@ -52,6 +57,16 @@ const productSchema = mongoose.Schema(
         },
       },
     ],
+    price: {
+      type: Number,
+      required: true,
+      min: [0, "Product price can't be negative"],
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      min: [0, "Product quantity can't be negative"],
+    },
     category: {
       type: String,
       required: true,
@@ -67,11 +82,56 @@ const productSchema = mongoose.Schema(
         required: true,
       },
     },
+    status: {
+      type: String,
+      required: true,
+      enum: {
+        values: ["in-stock", "out-of-stock", "discontinued"],
+        message: "status can't be {VALUE}",
+      },
+    },
+    store: {
+      name: {
+        type: String,
+        required: [true, "Please provide a brand name"],
+        trim: true,
+        enum: {
+          values: [
+            "dhaka",
+            "sylhet",
+            "rajshahi",
+            "rangpur",
+            "chottogram",
+            "mymansingh",
+            "khulna",
+            "barishal",
+          ],
+          message: "{VALUE} is not defined",
+        },
+        lowercase: true,
+      },
+      id: {
+        type: ObjectId,
+        ref: "Store",
+        required: true,
+      },
+    },
+    suppliedBy: {
+      name: {
+        type: String,
+        required: [true, "Please provide supplier name"],
+        trim: true,
+      },
+      id: {
+        id: ObjectId,
+        ref: "Suppliers",
+      },
+    },
   },
   { timestamps: true }
 );
 
 // Model
-const Product = mongoose.model("Product", productSchema);
+const Stock = mongoose.model("Stock", StockSchema);
 
-module.exports = Product;
+module.exports = Stock;
