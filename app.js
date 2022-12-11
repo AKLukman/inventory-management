@@ -9,12 +9,17 @@ app.use(cors());
 // Schema->Model->Query
 // Schema design
 
-// Product route
+// Routes
 const productRoute = require("./routes/product.route");
-app.use("/api/v1/product", productRoute);
+const brandRoute = require("./routes/brand.route");
+const stockRoute = require("./routes/stock.route");
 
 app.get("/", (req, res) => {
   res.send("Route is working");
 });
+
+app.use("/api/v1/product", productRoute);
+app.use("/api/v1/brand", brandRoute);
+app.use("/api/v1/stock", stockRoute);
 
 module.exports = app;
