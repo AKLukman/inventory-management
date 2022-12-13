@@ -123,7 +123,7 @@ const StockSchema = mongoose.Schema(
         trim: true,
       },
       id: {
-        id: ObjectId,
+        type: ObjectId,
         ref: "Suppliers",
       },
     },
