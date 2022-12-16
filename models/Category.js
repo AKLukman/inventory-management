@@ -11,7 +11,7 @@ const categorySchema = mongoose.Schema(
       required: [true, "Please provide a category name"],
       lowercase: true,
     },
-    description: true,
+    description: String,
     imageUrl: {
       type: String,
       validate: [validator.isURL, "Please provide a valid url"],

@@ -88,7 +88,7 @@ module.exports.createProduct = async (req, res, next) => {
 
     const result = await createProductService(req.body);
 
-    result.logger();
+    // result.logger();
 
     // create
     // const result = await Product.create(req.body);

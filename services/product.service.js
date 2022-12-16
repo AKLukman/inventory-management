@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+const Brand = require("../models/Brand");
 
 exports.getProductService = async (filters, queries) => {
   const products = await Product.find(filters)
@@ -14,12 +15,20 @@ exports.getProductService = async (filters, queries) => {
 };
 
 exports.createProductService = async (data) => {
-  const product = new Product(data);
-  if (product.quantity == 0) {
-    product.status = "Out-of-stock";
-  }
-  const result = await product.save();
-  return result;
+  // const product = new Product(data);
+  // if (product.quantity == 0) {
+  //   product.status = "Out-of-stock";
+  // }
+  const product = await Product.create(data);
+  // Populate
+  // step-1-> brand and id
+  const { _id: productId, brand } = product;
+  const res = await Brand.updateOne(
+    { _id: brand.id },
+    { $push: { products: productId } }
+  );
+  console.log(res);
+  return product;
 };
 
 exports.updateProductService = async (productId, data) => {
