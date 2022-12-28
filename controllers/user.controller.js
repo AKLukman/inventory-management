@@ -1,6 +1,7 @@
 const { signupService, findUserByEmail } = require("../services/user.service");
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../utils/token");
+const { json } = require("express");
 
 exports.signup = async (req, res, next) => {
   try {
@@ -87,6 +88,23 @@ exports.login = async (req, res, next) => {
         token,
         user: others,
       },
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Failed",
+      message: "couldn't  login the user",
+      error: error.message,
+    });
+  }
+};
+
+exports.getMe = async (req, res, next) => {
+  try {
+    const user = await findUserByEmail(req.user?.email);
+
+    res.status(200).json({
+      status: "success",
+      data: user,
     });
   } catch (error) {
     res.status(400).json({
